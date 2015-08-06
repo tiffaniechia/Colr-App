@@ -4,6 +4,6 @@
 #   end
 #
 #   it "has one window" do
-#     @app.windows.size.should == 1
+#     @app.windows.size.should.equal 1
 #   end
 # end
