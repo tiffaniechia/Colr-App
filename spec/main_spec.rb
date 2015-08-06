@@ -7,3 +7,4 @@
 #     @app.windows.size.should.equal 1
 #   end
 # end
+
