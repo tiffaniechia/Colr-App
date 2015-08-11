@@ -63,8 +63,7 @@ describe SearchController do
   describe '#button_touch_event' do
     it 'should disable state' do
       tap 'Search'
-      controller.instance_variable_get("@was_tapped").should == true
+      controller.instance_variable_get("@was_tapped").should.equal true
     end
-
   end
 end

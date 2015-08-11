@@ -6,7 +6,7 @@ class Color
   }
 
   def initialize(hash = {})
-    hash.each { |key,value|
+    hash.each { |key, value|
       if PROPERTIES.member? key.to_sym
         self.send((key.to_s + '=').to_s, value)
       end
@@ -19,7 +19,7 @@ class Color
 
   def tags=(tags)
     if tags.first.is_a? Hash
-      tags = tags.collect { |tag| Tag.new(tag)}
+      tags = tags.collect { |tag| Tag.new(tag) }
     end
 
     tags.each { |tag|
@@ -33,8 +33,18 @@ class Color
 
   def self.find(hex, &block)
     BubbleWrap::HTTP.get("http://www.colr.org/json/color/#{hex}") do |response|
-      p response.body.to_str
-      block.call(response)
+      result_data = BW::JSON.parse(response.body.to_s)
+
+      color_data = result_data['colors'] ? result_data['colors'][0] : {}
+
+      color = Color.new(color_data)
+
+      if color.id.to_i == -1 || color_data == {}
+        block.call(nil)
+      else
+        block.call(response)
+      end
+
     end
   end
 end
