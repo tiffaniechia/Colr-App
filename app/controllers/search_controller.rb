@@ -4,9 +4,29 @@ class SearchController < UIViewController
     super
     self.title = 'Search'
     self.view.backgroundColor = UIColor.whiteColor
-    
+
     create_views
     add_views [@text_field, @search_button]
+
+    create_button_touch_event
+  end
+
+  def create_button_touch_event
+    @search_button.when(UIControlEventTouchUpInside) do
+      @was_tapped = true
+      @search_button.enabled = false
+      @text_field.enabled = false
+      reformatted_hex = rip_hex(@text_field.text)
+      Color.find(reformatted_hex) do |color|
+        @finding_color = true
+        @search_button.enabled = true
+        @text_field.enabled = true
+      end
+    end
+  end
+
+  def rip_hex(hex)
+    hex[1..-1] if hex[0] == '#'
   end
 
   def create_views
@@ -25,6 +45,7 @@ class SearchController < UIViewController
 
   def create_submit_button
     @search_button = UIButton.buttonWithType UIButtonTypeRoundedRect
+    @search_button.accessibilityLabel = 'Searchh'
     @search_button.setTitle 'Search', forState: UIControlStateNormal
     @search_button.setTitle 'Loading', forState: UIControlStateDisabled
     @search_button.sizeToFit

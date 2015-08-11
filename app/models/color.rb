@@ -1,4 +1,5 @@
 class Color
+
   PROPERTIES = [:timestamp, :hex, :id, :tags]
   PROPERTIES.each { |prop|
     attr_accessor prop
@@ -28,5 +29,12 @@ class Color
     }
 
     @tags = tags
+  end
+
+  def self.find(hex, &block)
+    BubbleWrap::HTTP.get("http://www.colr.org/json/color/#{hex}") do |response|
+      p response.body.to_str
+      block.call(response)
+    end
   end
 end

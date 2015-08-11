@@ -2,9 +2,12 @@ GEM
   remote: https://rubygems.org/
   specs:
     bubble-wrap (1.9.2)
+    bubble-wrap-http (1.7.1)
     file_glob (0.0.1)
     listen (0.7.3)
     rake (10.4.2)
+    rb-fsevent (0.9.5)
+    webstub (1.1.2)
     when-files-change (0.2.3)
       file_glob (~> 0.0)
       listen (~> 0.7)
@@ -14,5 +17,8 @@ PLATFORMS
 
 DEPENDENCIES
   bubble-wrap
+  bubble-wrap-http
   rake
+  rb-fsevent
+  webstub
   when-files-change

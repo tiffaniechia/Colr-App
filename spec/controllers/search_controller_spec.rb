@@ -5,7 +5,6 @@ describe SearchController do
     before do
       @controller = SearchController.new
       @controller.viewDidLoad
-
       @controller_width = @controller.view.frame.size.width
       @controller_height = @controller.view.frame.size.height
     end
@@ -42,7 +41,6 @@ describe SearchController do
       @text_field.center.y.should.equal text_field_height
     end
 
-
     it 'should have submit button with default styling' do
       @search_button = @controller.view.subviews[1]
       result = @search_button.is_a? UIButton
@@ -56,4 +54,17 @@ describe SearchController do
     end
   end
 
+  describe '#rip_hex' do
+    controller = SearchController.new
+    hex = controller.rip_hex('#abcd')
+    hex.should.equal 'abcd'
+  end
+
+  describe '#button_touch_event' do
+    it 'should disable state' do
+      tap 'Search'
+      controller.instance_variable_get("@was_tapped").should == true
+    end
+
+  end
 end

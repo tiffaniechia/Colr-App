@@ -33,4 +33,43 @@
      end
    end
 
+   describe '#get_color' do
+     extend WebStub::SpecHelpers
+
+     describe 'get request to return json' do
+        it 'retrieves colour details' do
+          @request = '3B5998'
+          @response = {
+              colors: [
+                  {
+                      timestamp: 123,
+                      hex: @request,
+                      id: 456,
+                      tag: [
+                          {
+                              timestamp: 789,
+                              id: 1011,
+                              name: 'name'
+                          }
+                      ]
+                  }]}
+          @stub = stub_request(:get, 'http://www.colr.org/json/color/3B5998')
+          @stub.to_return(json: @response)
+
+
+          @results = nil
+          Color.self.find(@request) do |results, error|
+            @results_header = results.headers
+            @results_body = results.body
+            resume
+          end
+
+          wait_max 1.0 do
+            @stub.should.be.requested
+            @results_header['Content-Type'].should.be == 'application/json'
+          end
+        end
+     end
+   end
+
  end
