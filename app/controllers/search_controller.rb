@@ -19,14 +19,27 @@ class SearchController < UIViewController
       reformatted_hex = rip_hex(@text_field.text)
       Color.find(reformatted_hex) do |color|
         @finding_color = true
+        if color.nil?
+          #ui changes later: text field should clear, button shouldn't change text
+          @search_button.setTitle 'None:(', forState: UIControlStateNormal
+        else
+          @search_button.setTitle 'Search', forState: UIControlStateNormal
+          self.open_color(color)
+        end
+
         @search_button.enabled = true
         @text_field.enabled = true
       end
     end
   end
 
+  def open_color(color)
+
+    self.navigationController.pushViewController(ColorController.alloc.initWithColor(color), animated:true)
+  end
+
   def rip_hex(hex)
-    hex[1..-1] if hex[0] == '#'
+   hex[0] == '#' ? hex[1..-1] : hex
   end
 
   def create_views

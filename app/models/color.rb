@@ -33,8 +33,7 @@ class Color
 
   def self.find(hex, &block)
     BubbleWrap::HTTP.get("http://www.colr.org/json/color/#{hex}") do |response|
-      result_data = BW::JSON.parse(response.body.to_s)
-
+      result_data = BW::JSON.parse response.body.to_s
       color_data = result_data['colors'] ? result_data['colors'][0] : {}
 
       color = Color.new(color_data)
@@ -42,7 +41,7 @@ class Color
       if color.id.to_i == -1 || color_data == {}
         block.call(nil)
       else
-        block.call(response)
+        block.call(color)
       end
 
     end
