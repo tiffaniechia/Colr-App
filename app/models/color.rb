@@ -43,7 +43,12 @@ class Color
       else
         block.call(color)
       end
+    end
+  end
 
+  def add_tag(tag, &block)
+    BW::HTTP.post("http://www.colr.org/js/color/#{self.hex}/addtag/", payload: {tags: tag}) do |response|
+      block.call
     end
   end
 end

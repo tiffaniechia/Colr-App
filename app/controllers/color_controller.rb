@@ -13,6 +13,26 @@ class ColorController < UIViewController
     self.edgesForExtendedLayout = UIRectEdgeNone
     create_views
     add_views [@info_container, @color_view, @color_label, @text_field, @add, @table_view]
+    create_add_tag_event
+  end
+
+  def create_add_tag_event
+    @add.when(UIControlEventTouchUpInside) do
+      @add.enabled = false
+      @text_field.enabled = false
+      self.color.add_tag(@text_field.text) do
+        refresh
+      end
+    end
+  end
+
+  def refresh
+    Color.find(self.color.hex) do |color|
+      self.color = color
+      @table_view.reloadData
+      @add.enabled = true
+      @text_field.enabled = true
+    end
   end
 
   def create_views
@@ -82,4 +102,5 @@ class ColorController < UIViewController
     cell.textLabel.text = self.color.tags[indexPath.row].name
     cell
   end
+
 end
